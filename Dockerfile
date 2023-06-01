@@ -26,7 +26,7 @@ COPY docker/entrypoint.sh /entrypoint.sh
 COPY . /var/www
 
 # Установка разрешений на папки
-RUN chmod -R 777 /var/www/var/cache /var/www/var/log
+#RUN chmod -R 777 /var/www/var/cache /var/www/var/log
 
 WORKDIR /var/www
 
