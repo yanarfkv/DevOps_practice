@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+
+  database:
+    image: postgres:${POSTGRES_VERSION:-15}-alpine
+    ports:
+      - "5433:5433"
+    command: -p 5433
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-devops_project}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+
+volumes:
+  database_data:
+    driver: local
