@@ -16,12 +16,12 @@ jobs:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
-          Пользователь ${{ github.actor }} создал коммит
+          User ${{ github.actor }} created commit
           
-          Сообщение коммита: ${{ github.event.commits[0].message }}
-          Репозиторий: ${{ github.repository }}
+          Commit message: ${{ github.event.commits[0].message }}
+          Repository: ${{ github.repository }}
           
-          Посмотреть изменения: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v3
@@ -34,3 +34,21 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the stack
       run: docker-compose up -d --build
+
+    - name: Send Telegram notification with build status
+      if: ${{ success() }}
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          🟢 Build successful
+
+    - name: Send Telegram notification with build status
+      if: ${{ failure() }}
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          🔴 Build failed
