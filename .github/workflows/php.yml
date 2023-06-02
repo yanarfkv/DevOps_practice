@@ -10,7 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: send telegram message on push
+
+    - name: Send Telegram notification on push
+      if: github.event_name == 'push'
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
@@ -22,6 +24,12 @@ jobs:
           Repository: ${{ github.repository }}
           
           See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
+
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v3
@@ -32,10 +40,20 @@ jobs:
           ${{ runner.os }}-php-
 
     - uses: actions/checkout@v3
+
+    - name: Install Composer dependencies
+      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+    - name: Cache Docker image
+      uses: actions/cache@v3
+      with:
+        path: /var/lib/docker
+        key: ${{ runner.os }}-docker-${{ hashFiles('**/docker-compose.yml') }}
+
     - name: Build the stack
       run: docker-compose up -d --build
 
-    - name: Send Telegram notification with build status
+    - name: Send Telegram notification on successful build
       if: ${{ success() }}
       uses: appleboy/telegram-action@master
       with:
@@ -44,7 +62,7 @@ jobs:
         message: |
           🟢 Build successful
 
-    - name: Send Telegram notification with build status
+    - name: Send Telegram notification on failed build
       if: ${{ failure() }}
       uses: appleboy/telegram-action@master
       with:
