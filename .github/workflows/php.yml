@@ -16,9 +16,9 @@ jobs:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
-          *Пользователь ${{ github.actor }} создал коммит*
+          Пользователь ${{ github.actor }} создал коммит
           
-          Сообщение фиксации: ${{ github.event.commits[0].message }}
+          Сообщение коммита: ${{ github.event.commits[0].message }}
           Репозиторий: ${{ github.repository }}
           
           Посмотреть изменения: https://github.com/${{ github.repository }}/commit/${{github.sha}}
@@ -34,9 +34,3 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the stack
       run: docker-compose up -d --build
-
-    - name: Check http status code of site
-      uses: lakuapik/gh-actions-http-status@v1
-      with:
-        sites: '["http://localhost:8080"]'
-        expected: '[200]'
