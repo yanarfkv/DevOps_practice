@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    Авторизация
+{% endblock %}
+{% block body %}
+    <section class="intro">
+        <div class="mask d-flex align-items-center h-100" style="background-color: #D6D6D6;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+
+                                <div class="my-md-5 pb-5">
+
+                                    <h1 class="fw-bold mb-5">Авторизация</h1>
+
+                                    <form action="{{ path('login') }}" method="post">
+                                        <div class="form-outline mb-4">
+                                            <input type="text" name="_username" id="typeEmail" class="form-control form-control-lg" value="{{ last_username }}" />
+                                            <label class="form-label" for="typeEmail">Логин</label>
+                                        </div>
+
+                                        <div class="form-outline mb-5">
+                                            <input type="password" name="_password" id="typePassword" class="form-control form-control-lg" />
+                                            <label class="form-label" for="typePassword">Пароль</label>
+                                        </div>
+
+                                        <button class="btn btn-primary btn-lg btn-rounded px-5" type="submit">Войти</button>
+                                        {% if error %}
+                                            <div style="position: absolute;" class="text-danger mt-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                        {% endif %}
+                                    </form>
+                                </div>
+
+                                <div>
+                                    <p class="mb-0">Нет аккаунта? <a href="/register" class="text-body fw-bold">Зарегистрироваться</a></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

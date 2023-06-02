@@ -1,0 +1,79 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    Регистрация
+{% endblock %}
+{% block body %}
+    <section class="intro">
+        <div class="mask d-flex align-items-center h-100" style="background-color: #D6D6D6;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+
+                                <div class="my-md-5 pb-5">
+
+                                    <h1 class="fw-bold mb-5">Регистрация</h1>
+
+                                    {{ form_start(registrationForm) }}
+                                    <div class="form-outline mb-4">
+                                        {{ form_widget(registrationForm.name,{
+                                            attr: {'class':'form-control'},
+                                        }) }}
+                                        {{ form_label(registrationForm.name, 'Имя',
+                                            {label_attr: {'class': 'form-label', 'for':'registration_form_login'}},
+                                        ) }}
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        {{ form_widget(registrationForm.surname,{
+                                            attr: {'class':'form-control'},
+                                        }) }}
+                                        {{ form_label(registrationForm.surname, 'Фамилия',
+                                            {label_attr: {'class': 'form-label', 'for':'registration_form_login'}},
+                                        ) }}
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        {{ form_widget(registrationForm.login,{
+                                            attr: {'class':'form-control'},
+                                        }) }}
+                                        {{ form_label(registrationForm.login, 'Логин',
+                                            {label_attr: {'class': 'form-label', 'for':'registration_form_login'}},
+                                        ) }}
+                                    </div>
+
+                                    <div class="form-outline mb-5">
+                                        {{ form_widget(registrationForm.plainPassword,{
+                                            attr: {'class':'form-control'},
+                                        }) }}
+                                        {{ form_label(registrationForm.plainPassword, 'Пароль',
+                                            {label_attr: {'class': 'form-label', 'for':'registration_form_plainPassword'}},
+                                        ) }}
+                                    </div>
+
+                                    <button class="btn btn-primary btn-lg btn-rounded px-5" type="submit">Зарегистрироваться</button>
+
+                                    {{ form_end(registrationForm) }}
+
+                                    {% if not registrationForm.vars.valid %}
+                                        <div class="mt-3" style="position: absolute;">
+                                            {% for child in registrationForm.children %}
+                                                {%for error in child.vars.errors%}
+                                                    <p class="text-danger">{{error.message}}</p>
+                                                {%endfor%}
+                                            {%endfor%}
+                                        </div>
+                                    {%endif%}
+                                </div>
+
+                                <div>
+                                    <p class="mb-0">Есть аккаунт? <a href="/login" class="text-body fw-bold">Войти</a></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
